@@ -14,41 +14,53 @@ export default function PageThree({ inView }) {
         }}
       >
         <div className="research-heading">
-          <h1>How it Works</h1>
+          <h1>Publication Process</h1>
           <p className="text-box">
-            We are unwavering in our mission and act with urgency to make all
-            science openly available. Our role is to provide the world’s
-            scientists with the best, the fastest, and the most efficient
-            publishing experience.
+            At first author needs to specify their basic information according
+            to their requirements.
           </p>
+          <h2>Requirement Specification</h2>
           <ul>
-            <li> Speed </li>
-            <li> Quality</li>
-            <li> Innovation </li>
-            <li> Collaboration </li>
+            <li> Indexing Requirement </li>
+            <li> Journal’s Scope</li>
+            <li> Expected time of publication </li>
+            <li> Maximum budget for publication charges </li>
+            <li> Any other specific requirement</li>
+            <li> Article file </li>
           </ul>
-          <button className="more-links">View More &#8663;</button>
+          <h2>Final Procedure</h2>
+          <ul>
+            <li>
+              We provide a list of available journals matching to author’s
+              requirements.
+            </li>
+            <li>
+              Author need to make a selection from the given list of journals
+              and ensure by visiting their website and check the authenticity of
+              journals by themselves.
+            </li>
+            <li>
+              Then the article will be processed with selected journal and we
+              ensure about the publication process with target journal.
+            </li>
+            <li>
+              After getting the acceptance author needs to pay the charges as
+              per our terms.
+            </li>
+            <li>
+              Once all formalities completes then the target journals publishes
+              the work and we inform the author about their publication.
+            </li>
+          </ul>
         </div>
         <div className="guidance">
           <img loading="lazy" src={publication} alt="rs" />
           <div className="research-info">
             <h2> Publication Process</h2>
             <p>
-              Choose the most suitable research methodology based on the
-              argument of your research.
+              At first author needs to specify their basic information according
+              to their requirements.
             </p>
-            <button className="view-more">View More</button>
-          </div>
-        </div>
-        <div className="publication">
-          <img loading="lazy" src={payment} alt="rs" />
-          <div className="research-info">
-            <h2>Payment Process</h2>
-            <p>
-              Help the writing and formatting of the chapters with the correct
-              format, style, and flow of the chapters
-            </p>
-            <button className="view-more">Check Plans</button>
           </div>
         </div>
       </div>

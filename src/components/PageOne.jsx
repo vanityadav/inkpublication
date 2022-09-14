@@ -33,11 +33,13 @@ export default function PageOne() {
           }}
         >
           <p>
-            All author needs to get their research published with a tight
-            schedule with minimal budget in indexed and reputed journal. Many
-            institutions require different journals indexed in different
-            databases. So for all these issue we come forward to assist in best
-            way we can
+            I Publication Provides a wide range of publication and consultation
+            services for various journals indexed in Scopus, web of science,
+            PubMed, Google Scholar etc. We work as an intermediator for
+            publication between the author and the target journal. Nowadays it
+            is a very hectic work to select respected journals with specific
+            indexing and the journal that follows best practices for research
+            publication.
           </p>
         </div>
       </div>

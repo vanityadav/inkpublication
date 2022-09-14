@@ -79,7 +79,10 @@ body {
   margin: 0;
   overflow-x: hidden;
 }
-
+.content-all {
+  padding-top: 10vh;
+  min-height: 85vh;
+}
 ::-webkit-scrollbar {
   width: 0.5em;
 }
@@ -108,19 +111,19 @@ header {
   top: 0;
   left: 0;
   right: 0;
-  padding-block: 2vh;
+  padding-block: 1em;
   white-space: nowrap;
   color: var(--text-color);
   backdrop-filter: blur(4px);
-  font-size: clamp(0.5rem, 2vmin, 1rem);
+  font-size: clamp(0.5rem, 2vmax, 1rem);
   background-color: var(--nav-background-color);
 }
 .header-items {
   display: flex;
   margin: auto;
   padding: 0.5em;
-  width: 80vw;
-  column-gap: 8vw;
+  width: 80%;
+
   align-items: center;
   justify-content: space-between;
 }
@@ -149,7 +152,7 @@ header {
   border-radius: 1em;
   backdrop-filter: blur(10px);
   background-color: var(--nav-background-color);
-  line-height: 2.5vh;
+
   color: var(--text-color);
 }
 
@@ -168,7 +171,7 @@ header {
 .org {
   cursor: pointer;
   font-weight: 900;
-  font-size: clamp(0.7rem, 3vmin, 1.4rem);
+  font-size: clamp(0.7rem, 3vmax, 1.2rem);
 }
 
 .header-item {
@@ -205,34 +208,41 @@ header {
 .search-icon-in {
   left: 0;
   z-index: 4;
-  width: 3vmin;
-  height: 3vmin;
+  width: 4vmin;
+  height: 4vmin;
   padding: 0.1em;
   cursor: pointer;
   position: absolute;
 }
 .search-icon,
 .theme {
-  width: 3vmin;
-  height: 3vmin;
+  width: 4vmin;
+  height: 4vmin;
   padding: 0.1em;
   cursor: pointer;
   border-radius: 4vmin;
   filter: var(--svg-invert);
 }
-.search-icon:hover,
-.theme:hover {
-  transform: scale(110%);
-}
 
+/*                       select items       */
+select {
+}
+option {
+  padding: 1em;
+  line-height: 2em;
+}
 /*                   Body Styles           */
 
 .main-body {
   width: 80vw;
   margin: auto;
-  min-height: 100vh;
-  padding-top: 8vh;
   font-size: clamp(0.5rem, 2vmin, 1rem);
+}
+.sticky {
+  position: sticky;
+  bottom: 0;
+  right: 0;
+  background-color: yellow;
 }
 .about-us {
   display: flex;

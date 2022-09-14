@@ -5,6 +5,7 @@ import searchIcon from "../media/search.svg";
 import closeIcon from "../media/close.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
+import { NavLink } from "./NavLink";
 
 export default function Header({ theme, handleTheme }) {
   const [header, setHeader] = useState();
@@ -69,7 +70,7 @@ export default function Header({ theme, handleTheme }) {
                 <p>Ink Publication</p>
                 <p>Journals</p>
                 <p>Publication</p>
-                <p>Payment</p>
+                <p>About Us</p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -132,29 +133,29 @@ export default function Header({ theme, handleTheme }) {
                 <>
                   <div>
                     <motion.div {...animation} className="org">
-                      Ink Publication
+                      <NavLink to="/">Ink Publication</NavLink>
                     </motion.div>
                   </div>
                   <div>
                     <motion.div {...animation} className="header-item">
                       <div className="dropdown">
                         <span id="#journal">Journals</span>
+
                         <div className="journal-menu">
-                          <p>Recent</p>
-                          <p>Updated</p>
-                          <p>Trending</p>
-                          <p>Favorites</p>
-                          <p>Categories</p>
+                          <p>Google Scholar</p>
+                          <p>Web of Science</p>
+                          <p>
+                            <NavLink to="/journals">Scopus Journals</NavLink>
+                          </p>
+                          <p>Scopus Discontinued</p>
                         </div>
                       </div>
                       <div className="dropdown">
                         <span id="#publish">Publications</span>
                         <div className="publish-menu">
-                          <p>Status</p>
                           <p>Guidance</p>
                           <p>Research</p>
-                          <p>Submitted</p>
-                          <p>Publish Now</p>
+                          <p>Process</p>
                         </div>
                       </div>
 
