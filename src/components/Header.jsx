@@ -67,7 +67,7 @@ export default function Header({ theme, handleTheme }) {
           <AnimatePresence>
             {sideHeader && (
               <motion.div {...sideanimation} className="side-header">
-                <p>Ink Publication</p>
+                <p>I Publication</p>
                 <p>Journals</p>
                 <p>Publication</p>
                 <p>About Us</p>
@@ -94,7 +94,7 @@ export default function Header({ theme, handleTheme }) {
                         {...animation}
                         className="search-box"
                         type="text"
-                        placeholder="Search inkpublisher.com"
+                        placeholder="Search Journals"
                       />
                     </>
                   )}
@@ -133,7 +133,7 @@ export default function Header({ theme, handleTheme }) {
                 <>
                   <div>
                     <motion.div {...animation} className="org">
-                      <NavLink to="/">Ink Publication</NavLink>
+                      <NavLink to="/">I Publication</NavLink>
                     </motion.div>
                   </div>
                   <div>
@@ -152,22 +152,12 @@ export default function Header({ theme, handleTheme }) {
                       </div>
                       <div className="dropdown">
                         <span id="#publish">Publications</span>
-                        <div className="publish-menu">
-                          <p>Guidance</p>
-                          <p>Research</p>
-                          <p>Process</p>
-                        </div>
                       </div>
 
                       <div className="dropdown">
-                        <span id="#payment">Payment</span>
-                        <div className="payment-menu">
-                          <p>Discounts</p>
-                          <p>View Plans</p>
-                          <p>Student Aid</p>
-                          <p>Referral Code</p>
-                          <p>Redeem Coupons</p>
-                        </div>
+                        <span id="#about">
+                          <NavLink to="/about">About Us</NavLink>
+                        </span>
                       </div>
                     </motion.div>
                   </div>
@@ -189,7 +179,7 @@ export default function Header({ theme, handleTheme }) {
                       {...animation}
                       className="search-box"
                       type="text"
-                      placeholder="Search inkpublisher.com"
+                      placeholder="Search Journals"
                     />
                   </>
                 )}

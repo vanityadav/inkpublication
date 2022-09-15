@@ -6,14 +6,14 @@ export default function PageThree({ inView }) {
   return (
     <>
       <div
-        className="process-page"
+        className="page-box-content"
         style={{
           transform: inView ? "none" : "translateY(200px)",
           opacity: inView ? 1 : 0,
           transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s",
         }}
       >
-        <div className="research-heading">
+        <div className="publication">
           <h1>Publication Process</h1>
           <p className="text-box">
             At first author needs to specify their basic information according
@@ -53,9 +53,9 @@ export default function PageThree({ inView }) {
             </li>
           </ul>
         </div>
-        <div className="guidance">
+        <div className="box-container">
           <img loading="lazy" src={publication} alt="rs" />
-          <div className="research-info">
+          <div className="box-info">
             <h2> Publication Process</h2>
             <p>
               At first author needs to specify their basic information according

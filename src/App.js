@@ -5,7 +5,10 @@ import { useState, useEffect } from "react";
 import Journals from "./components/Journals";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
+import About from "./components/About";
 import { Route, Routes } from "react-router-dom";
+import Support from "./components/Support";
+import TOP from "./components/TOP";
 
 function App() {
   const [theme, setTheme] = useState();
@@ -26,8 +29,11 @@ function App() {
       <Header theme={theme} handleTheme={handleTheme} />
       <div className="content-all">
         <Routes>
-          <Route path="/" element={<Home theme={theme} />} />
-          <Route path="/journals" element={<Journals theme={theme} />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/top" element={<TOP />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/journals" element={<Journals />} />
         </Routes>
       </div>
       <Footer />
