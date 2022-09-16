@@ -5,7 +5,7 @@ import PageThree from "./PageThree";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
 
-export default function Homme() {
+export default function Home() {
   const ref = useRef(null);
   const ref1 = useRef(null);
   const isInView = useInView(ref, { once: true });

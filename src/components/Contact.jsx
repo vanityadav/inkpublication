@@ -19,7 +19,7 @@ export default function Contact({ theme }) {
         <div
           className="contact-info"
           style={{
-            transform: isInView ? "none" : "translateY(200px)",
+            transform: isInView ? "none" : "translateY(50px)",
             opacity: isInView ? 1 : 0,
             transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s",
           }}
@@ -43,7 +43,7 @@ export default function Contact({ theme }) {
             <div className="contact-buttons">
               <button>
                 <img src={terms} alt="c" />
-                <NavLink to="/top">Terms &amp; Policies </NavLink>
+                <NavLink to="/terms">Terms &amp; Policies </NavLink>
               </button>
               <button>
                 <img src={support} alt="c" />

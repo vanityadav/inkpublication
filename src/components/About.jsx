@@ -14,7 +14,7 @@ export default function About() {
   };
   return (
     <AnimatePresence>
-      <motion.div {...animation} className="about-us-page">
+      <motion.div {...animation} className="extra-text-page">
         <h1>About Us</h1>
         <p>
           Today there are thousands of publishers with millions of publication

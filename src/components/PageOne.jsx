@@ -16,7 +16,8 @@ export default function PageOne() {
             style={{
               transform: isInView ? "none" : "translateY(100px)",
               opacity: isInView ? 1 : 0,
-              transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s",
+              transition:
+                "all 1s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s , color 0.5s",
             }}
           >
             Your gateway to <br />
@@ -29,7 +30,8 @@ export default function PageOne() {
           style={{
             transform: isInView ? "none" : "translateY(100px)",
             opacity: isInView ? 1 : 0,
-            transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1s",
+            transition:
+              "all 1s cubic-bezier(0.17, 0.55, 0.55, 1) 1s ,color 0.5s",
           }}
         >
           <p>
@@ -50,7 +52,8 @@ export default function PageOne() {
             style={{
               transform: isInView ? "none" : "translateY(100px)",
               opacity: isInView ? 1 : 0,
-              transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1.5s",
+              transition:
+                "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 1.5s ,color 0.5s",
             }}
           >
             <CountUp
@@ -67,7 +70,8 @@ export default function PageOne() {
             style={{
               transform: isInView ? "none" : "translateY(100px)",
               opacity: isInView ? 1 : 0,
-              transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 2s",
+              transition:
+                "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 2s, color 0.5s",
             }}
           >
             <CountUp
@@ -85,7 +89,8 @@ export default function PageOne() {
           style={{
             transform: isInView ? "none" : "translateY(100px)",
             opacity: isInView ? 1 : 0,
-            transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 2.5s",
+            transition:
+              "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 2.5s, color 0.5s",
           }}
         >
           <img className="home-image" src={home} alt="" />

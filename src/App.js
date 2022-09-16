@@ -8,7 +8,8 @@ import Home from "./components/Home";
 import About from "./components/About";
 import { Route, Routes } from "react-router-dom";
 import Support from "./components/Support";
-import TOP from "./components/TOP";
+
+import Terms from "./components/Terms";
 
 function App() {
   const [theme, setTheme] = useState();
@@ -31,9 +32,13 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/top" element={<TOP />} />
           <Route path="/support" element={<Support />} />
-          <Route path="/journals" element={<Journals />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/all-journals" element={<Journals />} />
+          <Route path="/gs-journals" element={<Terms />} />
+          <Route path="/wos-journals" element={<Support />} />
+          <Route path="/sp-journals" element={<About />} />
+          <Route path="/ds-journals" element={<Home />} />
         </Routes>
       </div>
       <Footer />

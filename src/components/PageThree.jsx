@@ -1,5 +1,3 @@
-import React from "react";
-import payment from "../media/4e.jpg";
 import publication from "../media/1e.jpg";
 
 export default function PageThree({ inView }) {
@@ -10,7 +8,8 @@ export default function PageThree({ inView }) {
         style={{
           transform: inView ? "none" : "translateY(200px)",
           opacity: inView ? 1 : 0,
-          transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s",
+          transition:
+            "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s,  color 0.5s",
         }}
       >
         <div className="publication">

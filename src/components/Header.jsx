@@ -10,10 +10,26 @@ import { NavLink } from "./NavLink";
 export default function Header({ theme, handleTheme }) {
   const [header, setHeader] = useState();
   const [sideHeader, setSideHeader] = useState();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedJournal, setSelectedJournal] = useState();
+
+  const items = [
+    { key: "all-journals", value: "All Journals" },
+    { key: "gs-journals", value: "Google Scholar" },
+    { key: "wos-journals", value: "Web Of Science" },
+    { key: "sp-journals", value: "Scopus Journals" },
+    { key: "ds-journals", value: "Scopus Discontinued Journals" },
+  ];
   const animation = {
     initial: { y: "-10vw", opacity: 0 },
     animate: { y: "0", opacity: 1 },
     exit: { opacity: 0, transition: { duration: 0 } },
+    transition: { type: "spring", stiffness: 50 },
+  };
+  const dropdownani = {
+    initial: { top: "10vw", opacity: 0 },
+    animate: { top: "220%", opacity: 1 },
+    exit: { top: "10vw", opacity: 0 },
     transition: { type: "spring", stiffness: 50 },
   };
   const sideanimation = {
@@ -26,6 +42,7 @@ export default function Header({ theme, handleTheme }) {
   function handleSearch() {
     setSearchBar(!search);
   }
+
   useEffect(() => {
     if (window.innerHeight > window.innerWidth) setHeader(true);
     else setHeader(false);
@@ -43,7 +60,7 @@ export default function Header({ theme, handleTheme }) {
   function handelHeader() {
     setSideHeader(sideHeader === true ? false : true);
   }
-
+  const [active, setActive] = useState();
   return (
     <>
       <AnimatePresence>
@@ -76,138 +93,140 @@ export default function Header({ theme, handleTheme }) {
           </AnimatePresence>
         </motion.div>
       </AnimatePresence>
-      {header && (
-        <>
-          <header>
-            <div className="small-header-items">
-              <div className={search ? "search" : "search-gap"}>
-                <AnimatePresence>
-                  {search && (
-                    <>
-                      <motion.img
-                        {...animation}
-                        className="search-icon-in"
-                        src={searchIcon}
-                        alt="search-icon"
-                      ></motion.img>
-                      <motion.input
-                        {...animation}
-                        className="search-box"
-                        type="text"
-                        placeholder="Search Journals"
-                      />
-                    </>
-                  )}
-                </AnimatePresence>
-
-                <motion.img
-                  {...animation}
-                  className="search-icon"
-                  src={search ? closeIcon : searchIcon}
-                  alt="search-icon"
-                  onClick={handleSearch}
-                ></motion.img>
-
-                <AnimatePresence>
-                  {!search && (
-                    <motion.img
-                      {...animation}
-                      className="theme"
-                      onClick={handleTheme}
-                      src={theme === "light" ? light : dark}
-                      alt="theme"
-                    ></motion.img>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
-          </header>
-        </>
-      )}
-
-      {!header && (
-        <header>
-          <div className="header-items">
+      <header>
+        <motion.div
+          {...animation}
+          className={!header ? "header-items" : "m-header-items"}
+        >
+          {!header && (
             <AnimatePresence>
               {!search && (
                 <>
                   <div>
-                    <motion.div {...animation} className="org">
-                      <NavLink to="/">I Publication</NavLink>
-                    </motion.div>
+                    <NavLink
+                      to="/"
+                      className="org"
+                      style={{
+                        color: `${
+                          active === "org" ? "var(--text-hover-color)" : " "
+                        }`,
+                      }}
+                      onClick={() => setActive("org")}
+                    >
+                      I Publication
+                    </NavLink>
                   </div>
                   <div>
-                    <motion.div {...animation} className="header-item">
-                      <div className="dropdown">
-                        <span id="#journal">Journals</span>
+                    <NavLink
+                      to="/about"
+                      style={{
+                        color: `${
+                          active === "about" ? "var(--text-hover-color)" : " "
+                        }`,
+                      }}
+                      onClick={() => setActive("about")}
+                    >
+                      About Us
+                    </NavLink>
+                  </div>
+                  <div className="journal-header-dropdown">
+                    <NavLink
+                      style={{
+                        color: `${
+                          active === "journal" ? "var(--text-hover-color)" : " "
+                        }`,
+                      }}
+                      onClick={() => {
+                        setShowDropdown(!showDropdown);
+                        setActive("journal");
+                      }}
+                    >
+                      {selectedJournal ?? "Journals"}
+                    </NavLink>
 
-                        <div className="journal-menu">
-                          <p>Google Scholar</p>
-                          <p>Web of Science</p>
-                          <p>
-                            <NavLink to="/journals">Scopus Journals</NavLink>
-                          </p>
-                          <p>Scopus Discontinued</p>
-                        </div>
-                      </div>
-                      <div className="dropdown">
-                        <span id="#publish">Publications</span>
-                      </div>
+                    <AnimatePresence>
+                      {showDropdown && (
+                        <motion.div
+                          {...dropdownani}
+                          className="journal-dropdown-menu"
+                        >
+                          {items.map((item) => (
+                            <NavLink
+                              key={item.key}
+                              className="journal-dropdown-item"
+                              to={`/${item.key}`}
+                              onClick={() => {
+                                setActive("journal");
+                                setSelectedJournal(item.value);
+                                setShowDropdown(false);
+                              }}
+                            >
+                              {item.value}
+                            </NavLink>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
 
-                      <div className="dropdown">
-                        <span id="#about">
-                          <NavLink to="/about">About Us</NavLink>
-                        </span>
-                      </div>
-                    </motion.div>
+                  <div>
+                    <NavLink
+                      to="/submit-form"
+                      style={{
+                        color: `${
+                          active === "submit" ? "var(--text-hover-color)" : " "
+                        }`,
+                      }}
+                      onClick={() => setActive("submit")}
+                    >
+                      Submit Journals
+                    </NavLink>
                   </div>
                 </>
               )}
             </AnimatePresence>
+          )}
 
-            <div className={search ? "search" : "search-gap"}>
-              <AnimatePresence>
-                {search && (
-                  <>
-                    <motion.img
-                      {...animation}
-                      className="search-icon-in"
-                      src={searchIcon}
-                      alt="search-icon"
-                    ></motion.img>
-                    <motion.input
-                      {...animation}
-                      className="search-box"
-                      type="text"
-                      placeholder="Search Journals"
-                    />
-                  </>
-                )}
-              </AnimatePresence>
+          <div className={search ? "search" : "search-gap"}>
+            <AnimatePresence>
+              {search && (
+                <motion.div {...animation} className="search-bar-clicked">
+                  <img
+                    className="search-icon-in"
+                    src={searchIcon}
+                    alt="search-icon"
+                  ></img>
+                  <input
+                    className="search-box"
+                    type="text"
+                    placeholder="Search Journals"
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-              <motion.img
-                {...animation}
-                className="search-icon"
-                src={search ? closeIcon : searchIcon}
-                alt="search-icon"
-                onClick={handleSearch}
-              ></motion.img>
+            <motion.img
+              {...animation}
+              className="search-icon"
+              src={search ? closeIcon : searchIcon}
+              alt="search-icon"
+              onClick={handleSearch}
+            ></motion.img>
 
-              <AnimatePresence>
-                {!search && (
-                  <motion.img
-                    {...animation}
-                    className="theme"
-                    onClick={handleTheme}
-                    src={theme === "light" ? light : dark}
-                    alt="theme"
-                  ></motion.img>
-                )}
-              </AnimatePresence>
-            </div>
+            <AnimatePresence>
+              {!search && (
+                <motion.img
+                  {...animation}
+                  className="theme"
+                  onClick={handleTheme}
+                  src={theme === "light" ? light : dark}
+                  alt="theme"
+                ></motion.img>
+              )}
+            </AnimatePresence>
           </div>
-        </header>
-      )}
+        </motion.div>
+      </header>
     </>
   );
 }
