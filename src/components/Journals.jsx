@@ -1,18 +1,28 @@
-import React, { useEffect, useRef, useState } from "react";
+import "../Journals.css";
+import React from "react";
 
-function NavbarDarkExample() {
-  const [value, setValue] = useState();
-  const optionsRef = useRef();
-
-  function selectedvalue() {
-    setValue(optionsRef.current.value);
-  }
-
+export default function Journals() {
+  const paged = 0;
+  const total = 0;
+  const journals = 0;
+  const categoryName = "Journal Name";
   return (
     <>
-      <h1>Hello</h1>
+      <div className="journals-page">
+        <div className="journal-header">
+          <div>Journals</div>
+          <div>Filter</div>
+          <div>SearchBar</div>
+        </div>
+        <div>4 Journals</div>
+        <div>
+          <span>
+            Showing {paged - journals} results of {total - journals} in{" "}
+            {categoryName}
+          </span>
+        </div>
+        <div>Pagination</div>
+      </div>
     </>
   );
 }
-
-export default NavbarDarkExample;

@@ -1,0 +1,14 @@
+.journals-page {
+  width: 80vw;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.journal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 2em;
+}
