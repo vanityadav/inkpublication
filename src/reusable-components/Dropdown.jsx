@@ -53,7 +53,7 @@ export default function Dropdown({
 
       <AnimatePresence>
         {showDropdown && (
-          <motion.div {...dropdownani} className="comp-dropdown-menu">
+          <motion.dialog {...dropdownani} className="comp-dropdown-menu">
             {items.map((item) => (
               <NavLink
                 key={item.key}
@@ -68,7 +68,7 @@ export default function Dropdown({
                 {item.value}
               </NavLink>
             ))}
-          </motion.div>
+          </motion.dialog>
         )}
       </AnimatePresence>
     </div>

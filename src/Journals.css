@@ -9,6 +9,23 @@
 .journal-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  column-gap: 2em;
+  justify-content: space-around;
+  padding-block: 2em;
+  /* column-gap: 10vw; */
+}
+.journals-page-box-all {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 2vw;
+  column-gap: 2vh;
+}
+.journal-page-box {
+  box-sizing: border-box;
+
+  background-color: var(--grey);
+  box-shadow: 0 0 10px var(--box-shadow);
+  padding: 1em;
+  border-radius: 1em;
+  width: 25vw;
 }
