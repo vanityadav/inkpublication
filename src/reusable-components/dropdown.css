@@ -1,6 +1,23 @@
 .comp-dropdown {
   position: relative;
 }
+.comp-dropdown-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 1vmin;
+}
+.comp-dropdown-arrow {
+  pointer-events: none;
+  filter: var(--svg-invert);
+  transition: transform 0.3s ease-in-out;
+}
+
+.comp-dropdown-heading:hover .comp-dropdown-arrow,
+.comp-dropdown-heading:focus .comp-dropdown-arrow,
+.comp-dropdown-heading:active .comp-dropdown-arrow {
+  transform: translateY(0.3em) scaleY(150%);
+}
 
 .comp-dropdown-menu {
   position: absolute;
@@ -23,6 +40,7 @@
   padding: 1em;
   width: 100%;
   text-align: center;
+  white-space: nowrap;
   color: var(--text-color);
 }
 .comp-dropdown-item:hover {

@@ -1,5 +1,6 @@
 import { NavLink } from "../components/NavLink";
 import "./dropdown.css";
+import arrow from "../reusable-components/media/dropdownArrow.svg";
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -8,10 +9,10 @@ export default function Dropdown({
   defaultDropdownValue,
   selectedValue,
   setSelectedValue,
+  active,
+  setActive,
 }) {
   const dropdownRef = useRef();
-  const [active, setActive] = useState();
-
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownani = {
     initial: { top: "10vw", opacity: 0 },
@@ -44,8 +45,10 @@ export default function Dropdown({
           setShowDropdown(!showDropdown);
           setActive("active-color");
         }}
+        className="comp-dropdown-heading"
       >
         {selectedValue ?? defaultDropdownValue}
+        <img src={arrow} alt="" className="comp-dropdown-arrow" />
       </NavLink>
 
       <AnimatePresence>
@@ -55,7 +58,7 @@ export default function Dropdown({
               <NavLink
                 key={item.key}
                 className="comp-dropdown-item"
-                to={`/${item.route}`}
+                to={item.route}
                 onClick={() => {
                   setActive("active-color");
                   setSelectedValue(item.value);

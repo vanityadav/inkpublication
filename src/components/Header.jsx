@@ -18,11 +18,11 @@ export default function Header({
   const [sideHeader, setSideHeader] = useState();
 
   const items = [
-    { key: "all", route: "journals-all", value: "All Journals" },
-    { key: "gs", route: "journals-gs", value: "Google Scholar" },
-    { key: "wos", route: "journals-wos", value: "Web Of Science" },
-    { key: "sp", route: "journals-sp", value: "Scopus Journals" },
-    { key: "sd", route: "journals-sd", value: "Scopus Discontinued Journals" },
+    { key: "all", route: "/journals-all", value: "All Journals" },
+    { key: "gs", route: "/journals-gs", value: "Google Scholar" },
+    { key: "wos", route: "/journals-wos", value: "Web Of Science" },
+    { key: "sp", route: "/journals-sp", value: "Scopus Journals" },
+    { key: "sd", route: "/journals-sd", value: "Scopus Discontinued Journals" },
   ];
   const animation = {
     initial: { y: "-10vw", opacity: 0 },
@@ -135,6 +135,8 @@ export default function Header({
                     defaultDropdownValue={"Journals"}
                     setSelectedValue={setSelectedJournal}
                     selectedValue={selectedJournal}
+                    active={active}
+                    setActive={setActive}
                   />
                   <div>
                     <NavLink
