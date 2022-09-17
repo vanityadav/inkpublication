@@ -13,6 +13,8 @@ import Terms from "./components/Terms";
 
 function App() {
   const [theme, setTheme] = useState();
+  const [selectedJournal, setSelectedJournal] = useState();
+
   useEffect(() => {
     let userTheme = window.localStorage.getItem("theme");
     setTheme(userTheme ? userTheme : "light");
@@ -27,18 +29,27 @@ function App() {
   }
   return (
     <div id={theme} className="App">
-      <Header theme={theme} handleTheme={handleTheme} />
+      <Header
+        theme={theme}
+        handleTheme={handleTheme}
+        selectedJournal={selectedJournal}
+        setSelectedJournal={setSelectedJournal}
+      />
       <div className="content-all">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/support" element={<Support />} />
           <Route path="/terms" element={<Terms />} />
-          <Route path="/all-journals" element={<Journals />} />
-          <Route path="/gs-journals" element={<Terms />} />
-          <Route path="/wos-journals" element={<Support />} />
-          <Route path="/sp-journals" element={<About />} />
-          <Route path="/ds-journals" element={<Home />} />
+          <Route
+            path="/journals-:id"
+            element={
+              <Journals
+                selectedJournal={selectedJournal}
+                setSelectedJournal={setSelectedJournal}
+              />
+            }
+          />
         </Routes>
       </div>
       <Footer />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import light from "../media/light.svg";
 import dark from "../media/dark.svg";
 import searchIcon from "../media/search.svg";
@@ -6,19 +6,23 @@ import closeIcon from "../media/close.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 import { NavLink } from "./NavLink";
+import Dropdown from "../reusable-components/Dropdown";
 
-export default function Header({ theme, handleTheme }) {
+export default function Header({
+  theme,
+  handleTheme,
+  selectedJournal,
+  setSelectedJournal,
+}) {
   const [header, setHeader] = useState();
   const [sideHeader, setSideHeader] = useState();
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedJournal, setSelectedJournal] = useState();
 
   const items = [
-    { key: "all-journals", value: "All Journals" },
-    { key: "gs-journals", value: "Google Scholar" },
-    { key: "wos-journals", value: "Web Of Science" },
-    { key: "sp-journals", value: "Scopus Journals" },
-    { key: "ds-journals", value: "Scopus Discontinued Journals" },
+    { key: "all", route: "journals-all", value: "All Journals" },
+    { key: "gs", route: "journals-gs", value: "Google Scholar" },
+    { key: "wos", route: "journals-wos", value: "Web Of Science" },
+    { key: "sp", route: "journals-sp", value: "Scopus Journals" },
+    { key: "sd", route: "journals-sd", value: "Scopus Discontinued Journals" },
   ];
   const animation = {
     initial: { y: "-10vw", opacity: 0 },
@@ -26,12 +30,7 @@ export default function Header({ theme, handleTheme }) {
     exit: { opacity: 0, transition: { duration: 0 } },
     transition: { type: "spring", stiffness: 50 },
   };
-  const dropdownani = {
-    initial: { top: "10vw", opacity: 0 },
-    animate: { top: "220%", opacity: 1 },
-    exit: { top: "10vw", opacity: 0 },
-    transition: { type: "spring", stiffness: 50 },
-  };
+
   const sideanimation = {
     initial: { x: "-10vw", opacity: 0 },
     animate: { x: "0", opacity: 1 },
@@ -47,6 +46,7 @@ export default function Header({ theme, handleTheme }) {
     if (window.innerHeight > window.innerWidth) setHeader(true);
     else setHeader(false);
     window.addEventListener("resize", handleResize);
+
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -129,46 +129,13 @@ export default function Header({ theme, handleTheme }) {
                       About Us
                     </NavLink>
                   </div>
-                  <div className="journal-header-dropdown">
-                    <NavLink
-                      style={{
-                        color: `${
-                          active === "journal" ? "var(--text-hover-color)" : " "
-                        }`,
-                      }}
-                      onClick={() => {
-                        setShowDropdown(!showDropdown);
-                        setActive("journal");
-                      }}
-                    >
-                      {selectedJournal ?? "Journals"}
-                    </NavLink>
 
-                    <AnimatePresence>
-                      {showDropdown && (
-                        <motion.div
-                          {...dropdownani}
-                          className="journal-dropdown-menu"
-                        >
-                          {items.map((item) => (
-                            <NavLink
-                              key={item.key}
-                              className="journal-dropdown-item"
-                              to={`/${item.key}`}
-                              onClick={() => {
-                                setActive("journal");
-                                setSelectedJournal(item.value);
-                                setShowDropdown(false);
-                              }}
-                            >
-                              {item.value}
-                            </NavLink>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
+                  <Dropdown
+                    items={items}
+                    defaultDropdownValue={"Journals"}
+                    setSelectedValue={setSelectedJournal}
+                    selectedValue={selectedJournal}
+                  />
                   <div>
                     <NavLink
                       to="/submit-form"
