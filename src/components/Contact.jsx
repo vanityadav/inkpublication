@@ -27,49 +27,57 @@ export default function Contact({ theme }) {
           <div className="contact-details">
             <h1>Contact Us</h1>
             <div className="contact-buttons">
-              <button>
-                <img src={call} alt="c" />
-                <a href="tel:+91 8130914281 ">Call Us</a>
-              </button>
-              <button>
-                <img src={mail} alt="c" />
-                <a href="mailto:article@ipubservice.in">Email Us </a>
-              </button>
+              <a href="tel:+91 8130914281 ">
+                <button>
+                  <img src={call} alt="c" />
+                  Call Us
+                </button>
+              </a>
+              <a href="mailto:article@ipubservice.in">
+                <button>
+                  <img src={mail} alt="c" />
+                  Email Us
+                </button>
+              </a>
             </div>
           </div>
 
           <div className="contact-details">
             <h1>Help &amp; Support</h1>
             <div className="contact-buttons">
-              <button>
-                <img src={terms} alt="c" />
-                <NavLink to="/terms">Terms &amp; Policies </NavLink>
-              </button>
-              <button>
-                <img src={support} alt="c" />
-                <NavLink to="/support">Guidance</NavLink>
-              </button>
+              <NavLink to="/terms">
+                <button>
+                  <img src={terms} alt="c" />
+                  Terms &amp; Policies
+                </button>
+              </NavLink>
+              <NavLink to="/support">
+                <button>
+                  <img src={support} alt="c" />
+                  Guidance
+                </button>
+              </NavLink>
             </div>
           </div>
 
           <div className="socials-contact">
             <h1>Follow Us</h1>
             <div className="social-icons-links">
-              <button>
-                <a href="https://www.instagram.com/m_asoo_m.123/">
+              <a href="https://www.instagram.com/m_asoo_m.123/">
+                <button>
                   <img src={instagram} alt="s" />
-                </a>
-              </button>
-              <button>
-                <a href="https://www.facebook.com/I-Publication-107852172064256/?ref=pages_you_manage">
+                </button>
+              </a>
+              <a href="https://www.facebook.com/I-Publication-107852172064256/?ref=pages_you_manage">
+                <button>
                   <img src={facebook} alt="s" />
-                </a>
-              </button>
-              <button>
-                <a href="https://twitter.com/IPUBLICATION2">
+                </button>
+              </a>
+              <a href="https://twitter.com/IPUBLICATION2">
+                <button>
                   <img src={twitter} alt="s" />
-                </a>
-              </button>
+                </button>
+              </a>
             </div>
           </div>
         </div>

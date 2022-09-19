@@ -15,6 +15,7 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
   const [pagesArray, setPagesArray] = useState([]);
   const [numberOfResults, setResults] = useState(0);
   const [totalResults, setTotalResults] = useState(0);
+  const [pagination, setPagination] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("Title");
 
   const categoryFilters = [
@@ -33,7 +34,7 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
     { key: "title", value: "Title" },
     { key: "issn", value: "ISSN" },
     { key: "publisher", value: "Publisher" },
-    { key: "subject", value: "Subject Area" },
+    { key: "subjectArea", value: "Subject Area" },
   ];
 
   useEffect(() => {
@@ -43,29 +44,51 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
       )[0].key;
       if (category === "all") {
         setJournals(dbJournals);
+        console.log("Use Effect All Category", dbJournals);
       } else {
         let categorizedJournals = dbJournals.filter((journal) =>
           journal.category.includes(category)
         );
         setJournals(categorizedJournals);
+        setTotalResults(categorizedJournals.length);
+        console.log(
+          "Use Effect By Category",
+          categorizedJournals,
+          categorizedJournals.length
+        );
       }
     }
   }, [selectedJournal]);
 
   useEffect(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const newPagedJournals = _(newJournals)
+      .slice(startIndex)
+      .take(itemsPerPage)
+      .value();
+    setPagedJournals(newPagedJournals);
+    setResults(newPagedJournals.length);
+    console.log(
+      "Use Effect newJournals Changed",
+      newPagedJournals,
+      newPagedJournals.length
+    );
     setCurrentPage("1");
-    setTotalResults(newJournals.length);
+    if (newJournals.length >= itemsPerPage) setPagination(true);
     let pageSize = Math.ceil(newJournals.length / itemsPerPage);
     if (pageSize === 1) {
       setPagesArray([]);
+      console.log("Use Effect 0 Pages 1st Page", pageSize);
     } else {
       const totalPagesArray = _.range(1, pageSize + 1);
       setPagesArray(totalPagesArray);
+      console.log("Use Effect Total Pages Array", totalPagesArray);
     }
   }, [newJournals]);
 
   function handlePageChange(pageNumber) {
     setCurrentPage(pageNumber);
+    console.log("Page Number Handled", pageNumber);
   }
 
   useEffect(() => {
@@ -76,19 +99,26 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
       .value();
     setPagedJournals(newPagedJournals);
     setResults(newPagedJournals.length);
+    console.log(
+      "Use Effect CurrentPage Changed",
+      newPagedJournals,
+      newPagedJournals.length
+    );
   }, [currentPage]);
 
   function handleSearch({ target }) {
-    let userFilter = selectedFilter.toLowerCase();
+    let userFilter = searchFilters.filter(
+      (sfilter) => sfilter.value === selectedFilter
+    )[0].key;
     const filteredJournals = dbJournals.filter((journal) =>
       journal[`${userFilter}`]?.toLowerCase().includes(target.value)
     );
-    setPagedJournals(filteredJournals);
+    setJournals(filteredJournals);
   }
 
   return (
     <>
-      <div className="dbJournals-page">
+      <div className="journals-page">
         <div className="journal-header">
           <div className="journal-dropdown-menu">
             <Dropdown
@@ -119,7 +149,7 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
           </div>
         </div>
 
-        <div className="dbJournals-page-box-all">
+        <div className="journals-page-box-all">
           {pagedJournals.map((journal) => (
             <div key={journal._id} className="journal-page-box">
               <p> {journal.title}</p>
@@ -133,7 +163,7 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
             {selectedJournal ?? "All Journals"}
           </span>
         </div>
-        {
+        {pagination && (
           <div className="pagination-box">
             {pagesArray.map((pageNumber) => (
               <NavLink
@@ -152,7 +182,7 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
               </NavLink>
             ))}
           </div>
-        }
+        )}
       </div>
     </>
   );

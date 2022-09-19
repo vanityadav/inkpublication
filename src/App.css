@@ -61,7 +61,7 @@
   --text-hover-color: rgb(135, 105, 255);
   --research-info-color: rgba(255, 255, 255, 0.7);
   --grey: rgb(236, 239, 244);
-  --box-shadow: rgba(0, 0, 0, 0.5);
+  --box-shadow: rgba(0, 0, 0, 0.3);
 }
 #dark {
   --text-color: rgb(255, 255, 255);
@@ -71,7 +71,7 @@
   --text-hover-color: rgb(135, 105, 255);
   --research-info-color: rgba(0, 0, 0, 0.7);
   --grey: rgb(236, 239, 244);
-  --box-shadow: rgba(255, 255, 255, 0.5);
+  --box-shadow: rgba(255, 255, 255, 0.8);
 }
 
 /*                Document Styles                 */
@@ -337,10 +337,6 @@ footer {
   font-size: clamp(0.5rem, 2vmin, 1rem);
   white-space: nowrap;
   color: var(--text-color);
-  position: static;
-  bottom: 0;
-  left: 0;
-  right: 0;
   width: 100vw;
   transition: color 1s, background-color 1s;
   margin-top: 10vh;
@@ -351,10 +347,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: auto;
   padding: 1em;
-  column-gap: 4vw;
-  max-width: 80vw;
 }
 /*               Contact Styles         */
 
@@ -363,11 +356,8 @@ footer {
   margin: auto;
   font-size: clamp(0.5rem, 2vmin, 1rem);
   color: var(--text-color);
-  color: var(--text-color);
 }
-.contact-page-heading {
-  color: var(--text-hover-color);
-}
+
 .contact-info {
   display: flex;
   padding-block: 4vh;
@@ -388,9 +378,11 @@ footer {
   justify-content: center;
   padding: 1em;
   border-radius: 1em;
+  background-color: white;
   border: none;
   box-shadow: 0 0 8px var(--box-shadow);
   transition: transform 0.3s ease;
+  cursor: pointer;
 }
 .contact-details button:hover,
 .socials-contact button:hover {
@@ -398,7 +390,6 @@ footer {
 }
 .contact-details a {
   text-decoration: none;
-  color: var(--text-hover-color);
 }
 .contact-buttons {
   display: flex;
