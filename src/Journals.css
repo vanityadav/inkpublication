@@ -1,17 +1,19 @@
 .journals-page {
   width: 80vw;
+  min-height: 46.5vh;
   margin: auto;
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   flex-direction: column;
+  color: var(--text-color);
 }
 .journal-header {
   display: flex;
   align-items: center;
   justify-content: space-around;
   padding-block: 2em;
-  /* column-gap: 10vw; */
+  column-gap: 10vw;
 }
 .journals-page-box-all {
   display: flex;
@@ -19,6 +21,7 @@
   flex-wrap: wrap;
   row-gap: 2vw;
   column-gap: 2vh;
+  color: black;
 }
 .journal-page-box {
   box-sizing: border-box;
@@ -28,4 +31,32 @@
   padding: 1em;
   border-radius: 1em;
   width: 25vw;
+}
+.pagination-box {
+  display: flex;
+  margin-block: 4vh;
+  column-gap: 2vw;
+  background-color: grey;
+  padding-inline: 2em;
+  padding-block: 0.5em;
+  border-radius: 4em;
+}
+
+.active-page,
+.pagination-number {
+  display: flex;
+  justify-content: center;
+  padding: 1em;
+  width: 3vmin;
+  background-color: var(--box-shadow);
+  border-radius: 1em;
+  color: var(--text-color);
+}
+.active-page {
+  background-color: var(--text-color);
+  color: var(--text-hover-color);
+}
+.result-info {
+  margin-block: 2vh;
+  color: var(--text-color);
 }

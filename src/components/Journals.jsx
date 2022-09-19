@@ -1,48 +1,50 @@
 import "../Journals.css";
 import { useEffect, useState } from "react";
 import Dropdown from "../reusable-components/Dropdown";
-import { journals } from "../services/data";
+import { journals as dbJournals } from "../services/data";
+import _ from "lodash";
+import { NavLink } from "./NavLink";
 
 export default function Journals({ setSelectedJournal, selectedJournal }) {
-  const [newJournals, setJournals] = useState(journals);
-  const [pagedJournals, setPagedJournals] = useState(newJournals);
+  const itemsPerPage = 4;
+
   const [active, setActive] = useState();
+  const [newJournals, setJournals] = useState(dbJournals);
+  const [pagedJournals, setPagedJournals] = useState(newJournals);
+  const [currentPage, setCurrentPage] = useState("1");
+  const [pagesArray, setPagesArray] = useState([]);
+  const [numberOfResults, setResults] = useState(0);
+  const [totalResults, setTotalResults] = useState(0);
   const [selectedFilter, setSelectedFilter] = useState("Title");
 
-  const items = [
+  const categoryFilters = [
     { key: "all", value: "All Journals" },
     { key: "ucg", value: "UCG" },
     { key: "gs", value: "Google Scholar" },
     { key: "wos", value: "Web Of Science" },
-    { key: "sp", value: "Scopus Journals All" },
+    { key: "sp", value: "Scopus Journals" },
     { key: "spq1", value: "Scopus Journals Q1" },
     { key: "spq2", value: "Scopus Journals Q2" },
     { key: "spq3", value: "Scopus Journals Q3" },
     { key: "spq4", value: "Scopus Journals Q4" },
     { key: "sd", value: "Scopus Discontinued Journals" },
   ];
-  const searchby = [
+  const searchFilters = [
     { key: "title", value: "Title" },
     { key: "issn", value: "ISSN" },
     { key: "publisher", value: "Publisher" },
     { key: "subject", value: "Subject Area" },
   ];
 
-  function handleSearch({ target }) {
-    let userFilter = selectedFilter.toLowerCase();
-    const filteredJournals = journals.filter((journal) =>
-      journal[`${userFilter}`]?.toLowerCase().includes(target.value)
-    );
-    setJournals(filteredJournals);
-  }
-
   useEffect(() => {
     if (selectedJournal) {
-      let category = items.filter((item) => item.value === selectedJournal)[0]
-        .key;
-      if (category === "all") setJournals(journals);
-      else {
-        let categorizedJournals = journals.filter((journal) =>
+      let category = categoryFilters.filter(
+        (item) => item.value === selectedJournal
+      )[0].key;
+      if (category === "all") {
+        setJournals(dbJournals);
+      } else {
+        let categorizedJournals = dbJournals.filter((journal) =>
           journal.category.includes(category)
         );
         setJournals(categorizedJournals);
@@ -50,23 +52,47 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
     }
   }, [selectedJournal]);
 
-  // useEffect(() => {
-  //   if (selectedJournal) {
-  //     let key = items.filter((item) => item.value === selectedJournal);
-  //     let categorizedJournals = journals.filter((journal) =>
-  //       journal.category.includes(key[0].key)
-  //     );
-  //     setJournals(categorizedJournals);
-  //   }
-  // }, [newJournals]);
+  useEffect(() => {
+    setCurrentPage("1");
+    setTotalResults(newJournals.length);
+    let pageSize = Math.ceil(newJournals.length / itemsPerPage);
+    if (pageSize === 1) {
+      setPagesArray([]);
+    } else {
+      const totalPagesArray = _.range(1, pageSize + 1);
+      setPagesArray(totalPagesArray);
+    }
+  }, [newJournals]);
+
+  function handlePageChange(pageNumber) {
+    setCurrentPage(pageNumber);
+  }
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const newPagedJournals = _(newJournals)
+      .slice(startIndex)
+      .take(itemsPerPage)
+      .value();
+    setPagedJournals(newPagedJournals);
+    setResults(newPagedJournals.length);
+  }, [currentPage]);
+
+  function handleSearch({ target }) {
+    let userFilter = selectedFilter.toLowerCase();
+    const filteredJournals = dbJournals.filter((journal) =>
+      journal[`${userFilter}`]?.toLowerCase().includes(target.value)
+    );
+    setPagedJournals(filteredJournals);
+  }
 
   return (
     <>
-      <div className="journals-page">
+      <div className="dbJournals-page">
         <div className="journal-header">
           <div className="journal-dropdown-menu">
             <Dropdown
-              items={items}
+              items={categoryFilters}
               defaultDropdownValue={"All Journals"}
               selectedValue={selectedJournal}
               setSelectedValue={setSelectedJournal}
@@ -76,7 +102,7 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
           </div>
           <div className="journal-search-by">
             <Dropdown
-              items={searchby}
+              items={searchFilters}
               defaultDropdownValue={"Title"}
               selectedValue={selectedFilter}
               setSelectedValue={setSelectedFilter}
@@ -93,21 +119,40 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
           </div>
         </div>
 
-        <div className="journals-page-box-all">
-          {newJournals.map((journal) => (
+        <div className="dbJournals-page-box-all">
+          {pagedJournals.map((journal) => (
             <div key={journal._id} className="journal-page-box">
               <p> {journal.title}</p>
               <p>{journal.issn}</p>
             </div>
           ))}
         </div>
-        <div>
+        <div className="result-info">
           <span>
-            Showing {"all"} results of {newJournals.length} in{" "}
+            Showing {numberOfResults} results of {totalResults} in{" "}
             {selectedJournal ?? "All Journals"}
           </span>
         </div>
-        <div>Pagination</div>
+        {
+          <div className="pagination-box">
+            {pagesArray.map((pageNumber) => (
+              <NavLink
+                key={pageNumber}
+                onClick={() => handlePageChange(pageNumber)}
+              >
+                <div
+                  className={
+                    pageNumber === currentPage
+                      ? "active-page"
+                      : "pagination-number"
+                  }
+                >
+                  {pageNumber}
+                </div>
+              </NavLink>
+            ))}
+          </div>
+        }
       </div>
     </>
   );
