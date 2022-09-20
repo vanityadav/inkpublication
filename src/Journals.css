@@ -1,58 +1,116 @@
 .journals-page {
   width: 80vw;
-  min-height: 46.5vh;
+  min-height: 90vh;
   margin: auto;
   display: flex;
-  align-items: center;
+  justify-content: center;
   flex-direction: column;
   color: var(--text-color);
 }
 .journal-header {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  padding-block: 2em;
-  column-gap: 10vw;
+  justify-content: space-between;
+  padding: 0.5em;
+  margin-block: 2vw;
+  border-radius: 2em;
+  box-shadow: 0 0 8px var(--box-shadow);
+}
+.journal-search-field input {
+  outline: none;
+  border: none;
+  width: 20vw;
+  padding: 1em;
+  border-radius: 2em;
+  background-color: var(--grey);
+}
+.journal-popup {
+  border: none;
+  border-radius: 1em;
+  width: 60vw;
+  height: 50vh;
+  box-shadow: 0 0 10px var(--box-shadow);
+}
+::backdrop {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.journal-search-by,
+.journal-dropdown-menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5em;
+  border-radius: 2em;
+  box-shadow: 0 0 2px var(--box-shadow);
 }
 .journals-page-box-all {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  row-gap: 4vw;
-  column-gap: 4vw;
+  row-gap: 2vw;
+  column-gap: 2vw;
 }
 .journal-page-box {
   box-sizing: border-box;
   box-shadow: 0 0 10px var(--box-shadow);
   padding: 1em;
   border-radius: 1em;
-  width: 38vw;
+  width: 39vw;
+}
+
+.journal-title {
+  font-weight: 800;
+}
+.journals-view-details-button {
+  padding-block: 0.5em;
+  padding-inline: 1em;
+  border-radius: 2em;
+  display: flex;
+  align-items: center;
+  background-color: #aaffcc;
+  border: none;
+  outline: none;
+  color: var(--text-color);
+  transition: background-color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.journals-view-details-button:hover,
+.journals-view-details-button:focus {
+  background-color: #1dff77;
+  cursor: pointer;
+}
+
+.result-info {
+  display: flex;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2em;
+  color: var(--text-color);
 }
 .pagination-box {
   display: flex;
-  margin-block: 4vh;
-  column-gap: 2vw;
-  background-color: grey;
-  padding-inline: 2em;
-  padding-block: 0.5em;
-  border-radius: 4em;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1em;
+  column-gap: 0.6em;
+}
+.pagination-box img[alt="navigation"] {
+  height: 6vmin;
 }
 
 .active-page,
 .pagination-number {
   display: flex;
   justify-content: center;
-  padding: 1em;
-  width: 3vmin;
-  background-color: var(--box-shadow);
-  border-radius: 1em;
+  padding: 0.6em;
+  width: 2vmin;
+  border-radius: 0.3em;
   color: var(--text-color);
+  background-color: var(--page-box);
 }
 .active-page {
-  background-color: var(--text-color);
   color: var(--text-hover-color);
-}
-.result-info {
-  margin-block: 2vh;
-  color: var(--text-color);
+  background-color: white;
+  box-shadow: 0 0 4px var(--box-shadow);
 }

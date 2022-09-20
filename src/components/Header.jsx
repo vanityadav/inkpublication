@@ -129,15 +129,16 @@ export default function Header({
                       About Us
                     </NavLink>
                   </div>
-
-                  <Dropdown
-                    items={items}
-                    defaultDropdownValue={"Journals"}
-                    setSelectedValue={setSelectedJournal}
-                    selectedValue={selectedJournal}
-                    active={active}
-                    setActive={setActive}
-                  />
+                  <div className="header-journal-dropdown">
+                    <Dropdown
+                      items={items}
+                      defaultDropdownValue={"Journals"}
+                      setSelectedValue={setSelectedJournal}
+                      selectedValue={selectedJournal}
+                      active={active}
+                      setActive={setActive}
+                    />
+                  </div>
                   <div>
                     <NavLink
                       to="/submit-form"

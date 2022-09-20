@@ -3,19 +3,26 @@ import { useEffect, useState } from "react";
 import Dropdown from "../reusable-components/Dropdown";
 import { journals as dbJournals } from "../services/data";
 import _ from "lodash";
+import next from "../media/next.svg";
+import previous from "../media/previous.svg";
 import { NavLink } from "./NavLink";
 
 export default function Journals({ setSelectedJournal, selectedJournal }) {
   const itemsPerPage = 4;
-
   const [active, setActive] = useState();
   const [newJournals, setJournals] = useState(dbJournals);
   const [pagedJournals, setPagedJournals] = useState(newJournals);
-  const [currentPage, setCurrentPage] = useState("1");
+  const [currentPage, setCurrentPage] = useState(1);
   const [pagesArray, setPagesArray] = useState([]);
   const [numberOfResults, setResults] = useState(0);
   const [totalResults, setTotalResults] = useState(0);
-  const [pagination, setPagination] = useState(false);
+  const [nextButton, setNextButton] = useState(true);
+  const [previousButton, setPreviousButton] = useState(true);
+  const [pagination, setPagination] = useState(true);
+  const [searchInfo, setSearchInfo] = useState(false);
+  const [dialogJournal, setDialogJournal] = useState();
+  const [normalDialog, setNormalDialog] = useState(true);
+  const [dialogJournalIndex, setDialogJournalIndex] = useState();
   const [selectedFilter, setSelectedFilter] = useState("Title");
 
   const categoryFilters = [
@@ -38,12 +45,14 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
   ];
 
   useEffect(() => {
+    setSearchInfo(false);
     if (selectedJournal) {
       let category = categoryFilters.filter(
         (item) => item.value === selectedJournal
       )[0].key;
       if (category === "all") {
         setJournals(dbJournals);
+        setTotalResults(dbJournals.length);
         console.log("Use Effect All Category", dbJournals);
       } else {
         let categorizedJournals = dbJournals.filter((journal) =>
@@ -73,8 +82,9 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
       newPagedJournals,
       newPagedJournals.length
     );
-    setCurrentPage("1");
-    if (newJournals.length >= itemsPerPage) setPagination(true);
+    setCurrentPage(1);
+    if (newJournals.length <= itemsPerPage) setPagination(false);
+    else setPagination(true);
     let pageSize = Math.ceil(newJournals.length / itemsPerPage);
     if (pageSize === 1) {
       setPagesArray([]);
@@ -99,12 +109,29 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
       .value();
     setPagedJournals(newPagedJournals);
     setResults(newPagedJournals.length);
+    currentPage === 1 ? setPreviousButton(false) : setPreviousButton(true);
+    currentPage === pagesArray.length
+      ? setNextButton(false)
+      : setNextButton(true);
     console.log(
       "Use Effect CurrentPage Changed",
       newPagedJournals,
-      newPagedJournals.length
+      newPagedJournals.length,
+      "current page",
+      currentPage,
+      typeof currentPage,
+      startIndex,
+      typeof startIndex
     );
   }, [currentPage]);
+
+  function handleNext() {
+    if (currentPage < pagesArray.length)
+      setCurrentPage((previous) => previous + 1);
+  }
+  function handlePrevious() {
+    if (currentPage > 1) setCurrentPage((previous) => previous - 1);
+  }
 
   function handleSearch({ target }) {
     let userFilter = searchFilters.filter(
@@ -114,7 +141,34 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
       journal[`${userFilter}`]?.toLowerCase().includes(target.value)
     );
     setJournals(filteredJournals);
+    setSearchInfo(true);
   }
+  function handleViewDetails({ target }) {
+    let currentIndex = Number(target.parentElement.id);
+
+    target.nextElementSibling.showModal();
+    setNormalDialog(true);
+    setDialogJournalIndex(currentIndex);
+
+    console.log("View Button Clicked", target.nextElementSibling);
+    console.log("View Button Clicked", target.parentElement.id);
+  }
+  function handleDialogClose({ target }) {
+    console.log(target.parentElement.parentElement);
+    target.parentElement.parentElement.close();
+    setNormalDialog(true);
+  }
+  function handleNextJournal() {
+    setNormalDialog(false);
+    setDialogJournalIndex((prev) => prev + 1);
+  }
+  function handlePreviousJournal() {
+    setNormalDialog(false);
+    setDialogJournalIndex((prev) => prev - 1);
+  }
+  useEffect(() => {
+    setDialogJournal(pagedJournals[dialogJournalIndex]);
+  }, [normalDialog, dialogJournalIndex]);
 
   return (
     <>
@@ -151,20 +205,64 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
 
         <div className="journals-page-box-all">
           {pagedJournals.map((journal) => (
-            <div key={journal._id} className="journal-page-box">
-              <p> {journal.title}</p>
-              <p>{journal.issn}</p>
+            <div
+              id={pagedJournals.indexOf(journal)}
+              key={journal._id}
+              className="journal-page-box"
+            >
+              <p className="journal-title"> {journal.title}</p>
+              <p>ISSN :{journal.issn}</p>
+              <button
+                className="journals-view-details-button"
+                onClick={handleViewDetails}
+              >
+                View Details
+              </button>
+              <dialog className="journal-popup">
+                {normalDialog && (
+                  <>
+                    <p className="journal-title"> {journal.title}</p>
+                    <p>ISSN :{journal.issn}</p>
+                    <p>Subject Area: {journal.subjectArea}</p>
+                    <div>
+                      <button onClick={handlePreviousJournal}>Previous</button>
+                      <button onClick={handleDialogClose}>Close</button>
+                      <button onClick={handleNextJournal}>Next</button>
+                    </div>
+                  </>
+                )}
+                {!normalDialog && (
+                  <>
+                    <p className="journal-title"> {dialogJournal.title}</p>
+                    <p>ISSN :{dialogJournal.issn}</p>
+                    <p>Subject Area: {dialogJournal.subjectArea}</p>
+                    <div>
+                      <button onClick={handlePreviousJournal}>Previous</button>
+                      <button onClick={handleDialogClose}>Close</button>
+                      <button onClick={handleNextJournal}>Next</button>
+                    </div>
+                  </>
+                )}
+              </dialog>
             </div>
           ))}
         </div>
         <div className="result-info">
-          <span>
-            Showing {numberOfResults} results of {totalResults} in{" "}
-            {selectedJournal ?? "All Journals"}
-          </span>
+          {!searchInfo && (
+            <span>
+              Showing {numberOfResults} results of {totalResults} in{" "}
+              {selectedJournal ?? "All Journals"}
+            </span>
+          )}
+          {searchInfo && (
+            <span>{numberOfResults} results found in "All Journals"</span>
+          )}
         </div>
         {pagination && (
           <div className="pagination-box">
+            {previousButton && (
+              <img src={previous} alt="navigation" onClick={handlePrevious} />
+            )}
             {pagesArray.map((pageNumber) => (
               <NavLink
                 key={pageNumber}
@@ -172,7 +270,7 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
               >
                 <div
                   className={
-                    pageNumber === currentPage
+                    pageNumber == currentPage
                       ? "active-page"
                       : "pagination-number"
                   }
@@ -181,6 +279,9 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
                 </div>
               </NavLink>
             ))}
+            {nextButton && (
+              <img src={next} alt="navigation" onClick={handleNext} />
+            )}
           </div>
         )}
       </div>
