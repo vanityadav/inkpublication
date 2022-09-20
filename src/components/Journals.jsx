@@ -22,6 +22,9 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
   const [searchInfo, setSearchInfo] = useState(false);
   const [dialogJournal, setDialogJournal] = useState();
   const [normalDialog, setNormalDialog] = useState(true);
+  const [classStatus, setClassStatus] = useState(true);
+  const [nextNavigateTo, setNextNavigateTo] = useState("Journal");
+  const [prevNavigateTo, setPrevNavigateTo] = useState("Journal");
   const [dialogJournalIndex, setDialogJournalIndex] = useState();
   const [selectedFilter, setSelectedFilter] = useState("Title");
 
@@ -159,17 +162,36 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
     setNormalDialog(true);
   }
   function handleNextJournal() {
-    setNormalDialog(false);
-    setDialogJournalIndex((prev) => prev + 1);
+    if (dialogJournalIndex < pagedJournals.length - 1) {
+      setNormalDialog(false);
+      setDialogJournalIndex((prev) => prev + 1);
+    } else handleNext();
   }
   function handlePreviousJournal() {
-    setNormalDialog(false);
-    setDialogJournalIndex((prev) => prev - 1);
+    if (dialogJournalIndex > 0) {
+      setNormalDialog(false);
+      setDialogJournalIndex((prev) => prev - 1);
+    } else handlePrevious();
   }
   useEffect(() => {
     setDialogJournal(pagedJournals[dialogJournalIndex]);
   }, [normalDialog, dialogJournalIndex]);
 
+  useEffect(() => {
+    if (dialogJournalIndex === 0 && currentPage === 1) setClassStatus(false);
+    if (
+      currentPage === pagesArray.length &&
+      dialogJournalIndex === pagedJournals.length - 1
+    )
+      setClassStatus(false);
+    if (dialogJournalIndex === 0) setPrevNavigateTo("Page");
+    else setPrevNavigateTo("Journal");
+    console.log(prevNavigateTo);
+    if (dialogJournalIndex === pagedJournals.length - 1)
+      setNextNavigateTo("Page");
+    else setNextNavigateTo("Journal");
+    console.log(nextNavigateTo);
+  }, [pagedJournals, dialogJournalIndex, dialogJournal]);
   return (
     <>
       <div className="journals-page">
@@ -224,10 +246,37 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
                     <p className="journal-title"> {journal.title}</p>
                     <p>ISSN :{journal.issn}</p>
                     <p>Subject Area: {journal.subjectArea}</p>
-                    <div>
-                      <button onClick={handlePreviousJournal}>Previous</button>
-                      <button onClick={handleDialogClose}>Close</button>
-                      <button onClick={handleNextJournal}>Next</button>
+                    <div className="journal-dialog-buttons-grp">
+                      <button
+                        className={
+                          classStatus
+                            ? "journal-dialog-buttons"
+                            : "journal-dialog-buttons disabled"
+                        }
+                        onClick={handlePreviousJournal}
+                      >
+                        Previous {prevNavigateTo}
+                      </button>
+                      <button
+                        className={
+                          classStatus
+                            ? "journal-dialog-buttons"
+                            : "journal-dialog-buttons disabled"
+                        }
+                        onClick={handleDialogClose}
+                      >
+                        Close
+                      </button>
+                      <button
+                        className={
+                          classStatus
+                            ? "journal-dialog-buttons"
+                            : "journal-dialog-buttons disabled"
+                        }
+                        onClick={handleNextJournal}
+                      >
+                        Next {nextNavigateTo}
+                      </button>
                     </div>
                   </>
                 )}
@@ -236,10 +285,37 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
                     <p className="journal-title"> {dialogJournal.title}</p>
                     <p>ISSN :{dialogJournal.issn}</p>
                     <p>Subject Area: {dialogJournal.subjectArea}</p>
-                    <div>
-                      <button onClick={handlePreviousJournal}>Previous</button>
-                      <button onClick={handleDialogClose}>Close</button>
-                      <button onClick={handleNextJournal}>Next</button>
+                    <div className="journal-dialog-buttons-grp">
+                      <button
+                        className={
+                          classStatus
+                            ? "journal-dialog-buttons"
+                            : "journal-dialog-buttons disabled"
+                        }
+                        onClick={handlePreviousJournal}
+                      >
+                        Previous {prevNavigateTo}
+                      </button>
+                      <button
+                        className={
+                          classStatus
+                            ? "journal-dialog-buttons"
+                            : "journal-dialog-buttons disabled"
+                        }
+                        onClick={handleDialogClose}
+                      >
+                        Close
+                      </button>
+                      <button
+                        className={
+                          classStatus
+                            ? "journal-dialog-buttons"
+                            : "journal-dialog-buttons disabled"
+                        }
+                        onClick={handleNextJournal}
+                      >
+                        Next {nextNavigateTo}
+                      </button>
                     </div>
                   </>
                 )}
