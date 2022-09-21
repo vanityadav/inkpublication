@@ -19,10 +19,18 @@
 .journal-search-field input {
   outline: none;
   border: none;
-  width: 20vw;
+  width: 40vw;
   padding: 1em;
   border-radius: 2em;
   background-color: var(--grey);
+}
+.journal-search-field {
+  position: relative;
+}
+.journal-search-by {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 .journal-search-by,
 .journal-dropdown-menu {
@@ -76,8 +84,9 @@
   height: 50vh;
   box-shadow: 0 0 10px var(--box-shadow);
 }
-::backdrop {
+dialog::backdrop {
   background-color: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
 }
 .dialog-journal-info {
   min-height: 40vh;
@@ -97,7 +106,12 @@
   background-color: #aaffcc;
   color: black;
 }
-
+.nav-button {
+  filter: var(--svg-invert);
+}
+.nav-disabled {
+  filter: invert(80%);
+}
 .button-disabled {
   border: none;
   outline: none;

@@ -1,11 +1,12 @@
 import "../Journals.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Dropdown from "../reusable-components/Dropdown";
 import { journals as dbJournals } from "../services/data";
 import _ from "lodash";
 import next from "../media/next.svg";
 import previous from "../media/previous.svg";
 import { NavLink } from "./NavLink";
+import useStateWithCallback from "use-state-with-callback";
 
 export default function Journals({ setSelectedJournal, selectedJournal }) {
   const itemsPerPage = 4;
@@ -27,6 +28,8 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
   const [nextNavigateTo, setNextNavigateTo] = useState("Journal");
   const [prevNavigateTo, setPrevNavigateTo] = useState("Journal");
   const [dialogJournalIndex, setDialogJournalIndex] = useState();
+  const [currentDialogBox, setCurrentDialogBox] = useState();
+  const [modalMouseOut, setModalMouseOut] = useState();
   const [selectedFilter, setSelectedFilter] = useState("Title");
 
   const categoryFilters = [
@@ -141,27 +144,50 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
     let userFilter = searchFilters.filter(
       (sfilter) => sfilter.value === selectedFilter
     )[0].key;
-    const filteredJournals = dbJournals.filter((journal) =>
-      journal[`${userFilter}`]?.toLowerCase().includes(target.value)
-    );
-    setJournals(filteredJournals);
-    setSearchInfo(true);
+    let query = target.value;
+    if (query !== "") {
+      const filteredJournals = dbJournals.filter((journal) =>
+        journal[`${userFilter}`]?.toLowerCase().includes(query)
+      );
+      setJournals(filteredJournals);
+      setSearchInfo(true);
+    }
+    if (query === "") setSearchInfo(false);
   }
   function handleViewDetails({ target }) {
+    setCurrentDialogBox(target.nextElementSibling);
     let currentIndex = Number(target.parentElement.id);
-
     target.nextElementSibling.showModal();
+
     setNormalDialog(true);
     setDialogJournalIndex(currentIndex);
 
+    console.log("Dialog Is ON");
     console.log("View Button Clicked", target.nextElementSibling);
     console.log("View Button Clicked", target.parentElement.id);
   }
-  function handleDialogClose({ target }) {
-    console.log(target.parentElement.parentElement);
-    target.parentElement.parentElement.close();
+
+  function handleDialogClose() {
+    currentDialogBox.close();
+    setModalMouseOut(false);
     setNormalDialog(true);
   }
+
+  useEffect(() => {
+    console.log("current dialog changed");
+    setModalMouseOut(true);
+  }, [currentDialogBox]);
+
+  useEffect(() => {
+    if (modalMouseOut) {
+      document.addEventListener("click", handleClick);
+      function handleClick(event) {
+        console.log("Clicked", event.target, currentDialogBox);
+        if (event.target !== currentDialogBox) console.log("not Equal");
+      }
+    }
+  });
+
   function handleNextJournal() {
     if (dialogJournalIndex < pagedJournals.length - 1) {
       setNormalDialog(false);
@@ -215,22 +241,23 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
               setActive={setActive}
             />
           </div>
-          <div className="journal-search-by">
-            <Dropdown
-              items={searchFilters}
-              defaultDropdownValue={"Title"}
-              selectedValue={selectedFilter}
-              setSelectedValue={setSelectedFilter}
-              active={active}
-              setActive={setActive}
-            />
-          </div>
+
           <div className="journal-search-field">
             <input
               onChange={handleSearch}
               type="text"
               placeholder={` Search Journals by ${selectedFilter} `}
             />
+            <div className="journal-search-by">
+              <Dropdown
+                items={searchFilters}
+                defaultDropdownValue={"Title"}
+                selectedValue={selectedFilter}
+                setSelectedValue={setSelectedFilter}
+                active={active}
+                setActive={setActive}
+              />
+            </div>
           </div>
         </div>
 
@@ -341,9 +368,13 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
         </div>
         {pagination && (
           <div className="pagination-box">
-            {previousButton && (
-              <img src={previous} alt="navigation" onClick={handlePrevious} />
-            )}
+            <img
+              src={previous}
+              alt="navigation"
+              onClick={handlePrevious}
+              className={previousButton ? "nav-button" : "nav-disabled"}
+            />
+
             {pagesArray.map((pageNumber) => (
               <NavLink
                 key={pageNumber}
@@ -360,9 +391,13 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
                 </div>
               </NavLink>
             ))}
-            {nextButton && (
-              <img src={next} alt="navigation" onClick={handleNext} />
-            )}
+
+            <img
+              src={next}
+              alt="navigation"
+              onClick={handleNext}
+              className={nextButton ? "nav-button" : "nav-disabled"}
+            />
           </div>
         )}
       </div>
