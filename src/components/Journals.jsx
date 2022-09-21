@@ -1,12 +1,11 @@
 import "../Journals.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Dropdown from "../reusable-components/Dropdown";
 import { journals as dbJournals } from "../services/data";
 import _ from "lodash";
 import next from "../media/next.svg";
 import previous from "../media/previous.svg";
 import { NavLink } from "./NavLink";
-import useStateWithCallback from "use-state-with-callback";
 
 export default function Journals({ setSelectedJournal, selectedJournal }) {
   const itemsPerPage = 4;
