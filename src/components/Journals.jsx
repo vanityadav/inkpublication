@@ -22,7 +22,8 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
   const [searchInfo, setSearchInfo] = useState(false);
   const [dialogJournal, setDialogJournal] = useState();
   const [normalDialog, setNormalDialog] = useState(true);
-  const [classStatus, setClassStatus] = useState(true);
+  const [nextbuttonStatus, setNextButtonStatus] = useState("");
+  const [prevbuttonStatus, setPrevButtonStatus] = useState("");
   const [nextNavigateTo, setNextNavigateTo] = useState("Journal");
   const [prevNavigateTo, setPrevNavigateTo] = useState("Journal");
   const [dialogJournalIndex, setDialogJournalIndex] = useState();
@@ -177,21 +178,29 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
     setDialogJournal(pagedJournals[dialogJournalIndex]);
   }, [normalDialog, dialogJournalIndex]);
 
+  function checkButtonStatus() {
+    currentPage === pagesArray.length &&
+    dialogJournalIndex === pagedJournals.length - 1
+      ? setNextButtonStatus("next-disabled")
+      : setNextButtonStatus("");
+    dialogJournalIndex === 0 && currentPage === 1
+      ? setPrevButtonStatus("prev-disabled")
+      : setPrevButtonStatus("");
+    console.log(dialogJournalIndex, pagedJournals.length - 1);
+  }
+
   useEffect(() => {
-    if (dialogJournalIndex === 0 && currentPage === 1) setClassStatus(false);
-    if (
-      currentPage === pagesArray.length &&
-      dialogJournalIndex === pagedJournals.length - 1
-    )
-      setClassStatus(false);
+    checkButtonStatus();
     if (dialogJournalIndex === 0) setPrevNavigateTo("Page");
     else setPrevNavigateTo("Journal");
-    console.log(prevNavigateTo);
+
     if (dialogJournalIndex === pagedJournals.length - 1)
       setNextNavigateTo("Page");
     else setNextNavigateTo("Journal");
+
     console.log(nextNavigateTo);
   }, [pagedJournals, dialogJournalIndex, dialogJournal]);
+
   return (
     <>
       <div className="journals-page">
@@ -243,35 +252,33 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
               <dialog className="journal-popup">
                 {normalDialog && (
                   <>
-                    <p className="journal-title"> {journal.title}</p>
-                    <p>ISSN :{journal.issn}</p>
-                    <p>Subject Area: {journal.subjectArea}</p>
+                    <div className="dialog-journal-info">
+                      <p className="journal-title"> {journal.title}</p>
+                      <p>ISSN :{journal.issn}</p>
+                      <p>Subject Area: {journal.subjectArea}</p>
+                    </div>
                     <div className="journal-dialog-buttons-grp">
                       <button
                         className={
-                          classStatus
-                            ? "journal-dialog-buttons"
-                            : "journal-dialog-buttons disabled"
+                          prevbuttonStatus === "prev-disabled"
+                            ? "button-disabled"
+                            : "journal-dialog-buttons"
                         }
                         onClick={handlePreviousJournal}
                       >
                         Previous {prevNavigateTo}
                       </button>
                       <button
-                        className={
-                          classStatus
-                            ? "journal-dialog-buttons"
-                            : "journal-dialog-buttons disabled"
-                        }
+                        className="journal-dialog-buttons"
                         onClick={handleDialogClose}
                       >
                         Close
                       </button>
                       <button
                         className={
-                          classStatus
-                            ? "journal-dialog-buttons"
-                            : "journal-dialog-buttons disabled"
+                          nextbuttonStatus === "next-disabled"
+                            ? "button-disabled"
+                            : "journal-dialog-buttons"
                         }
                         onClick={handleNextJournal}
                       >
@@ -282,35 +289,33 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
                 )}
                 {!normalDialog && (
                   <>
-                    <p className="journal-title"> {dialogJournal.title}</p>
-                    <p>ISSN :{dialogJournal.issn}</p>
-                    <p>Subject Area: {dialogJournal.subjectArea}</p>
+                    <div className="dialog-journal-info">
+                      <p className="journal-title"> {dialogJournal.title}</p>
+                      <p>ISSN :{dialogJournal.issn}</p>
+                      <p>Subject Area: {dialogJournal.subjectArea}</p>
+                    </div>
                     <div className="journal-dialog-buttons-grp">
                       <button
                         className={
-                          classStatus
-                            ? "journal-dialog-buttons"
-                            : "journal-dialog-buttons disabled"
+                          prevbuttonStatus === "prev-disabled"
+                            ? "button-disabled"
+                            : "journal-dialog-buttons"
                         }
                         onClick={handlePreviousJournal}
                       >
                         Previous {prevNavigateTo}
                       </button>
                       <button
-                        className={
-                          classStatus
-                            ? "journal-dialog-buttons"
-                            : "journal-dialog-buttons disabled"
-                        }
+                        className="journal-dialog-buttons"
                         onClick={handleDialogClose}
                       >
                         Close
                       </button>
                       <button
                         className={
-                          classStatus
-                            ? "journal-dialog-buttons"
-                            : "journal-dialog-buttons disabled"
+                          nextbuttonStatus === "next-disabled"
+                            ? "button-disabled"
+                            : "journal-dialog-buttons"
                         }
                         onClick={handleNextJournal}
                       >
