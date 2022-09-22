@@ -110,6 +110,7 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
       setReceivedJournals(filteredJournals);
       console.log("Sets New Received Journals");
     }
+    if ((query = "")) setSelectedJournal(selectedJournal);
   }
   function handleViewDetails(jID) {
     let dJournal = pagedJournals.filter((journal) => {
