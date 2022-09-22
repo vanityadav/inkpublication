@@ -2,7 +2,7 @@ import "./App.css";
 import "./AppP.css";
 import Header from "./components/Header";
 import { useState, useEffect } from "react";
-import Journals from "./components/Journals";
+import Journals from "./reusable-components/journals/Journals";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
 import About from "./components/About";

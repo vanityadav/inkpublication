@@ -7,7 +7,7 @@
   flex-direction: column;
   color: var(--text-color);
 }
-.journal-header {
+.comp-page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -16,7 +16,7 @@
   border-radius: 2em;
   box-shadow: 0 0 8px var(--box-shadow);
 }
-.journal-search-field input {
+.comp-page-search-field input {
   outline: none;
   border: none;
   width: 40vw;
@@ -24,16 +24,16 @@
   border-radius: 2em;
   background-color: var(--grey);
 }
-.journal-search-field {
+.comp-page-search-field {
   position: relative;
 }
-.journal-search-by {
+.comp-page-search-by {
   position: absolute;
   top: 0;
   right: 0;
 }
-.journal-search-by,
-.journal-dropdown-menu {
+.comp-page-search-by,
+.comp-page-dropdown-menu {
   display: flex;
   align-items: center;
   justify-content: space-between;

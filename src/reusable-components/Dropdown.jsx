@@ -31,7 +31,15 @@ export default function Dropdown({
       };
     }
   });
-
+  function handleDropDownClick() {
+    setShowDropdown(!showDropdown);
+    setActive("active-color");
+  }
+  function handleChangeValue(item) {
+    setActive("active-color");
+    setSelectedValue(item.value);
+    setShowDropdown(false);
+  }
   return (
     <div className="comp-dropdown">
       <NavLink
@@ -41,10 +49,7 @@ export default function Dropdown({
             active === "active-color" ? "var(--text-hover-color)" : " "
           }`,
         }}
-        onClick={() => {
-          setShowDropdown(!showDropdown);
-          setActive("active-color");
-        }}
+        onClick={handleDropDownClick}
         className="comp-dropdown-heading"
       >
         {selectedValue ?? defaultDropdownValue}
@@ -59,11 +64,7 @@ export default function Dropdown({
                 key={item.key}
                 className="comp-dropdown-item"
                 to={item.route}
-                onClick={() => {
-                  setActive("active-color");
-                  setSelectedValue(item.value);
-                  setShowDropdown(false);
-                }}
+                onClick={() => handleChangeValue(item)}
               >
                 {item.value}
               </NavLink>

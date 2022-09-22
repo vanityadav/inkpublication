@@ -2,7 +2,7 @@ export const journals = [
   {
     _id: "sc1",
     category: "spq2",
-    title: "JOURNAL OF POSITIVE SCHOOL PSYCHOLOGY (Q2)",
+    title: "JOURNAL OF POSITIVE SCHOOL PSYCHOLOGY",
     subjectArea:
       "(Multidisciplinary) Pharmacology, Toxicology and Pharmaceutics, Drug Discovery, Pharmaceutical Science, Pharmacology, Pharmacy, Obstetrics and Gynaecology, Physics and Astronomy: Atomic and Molecular Physics, and Optics Neuroscience: Developmental Neuroscience, Medical Science, Biochemistry, Microbiology, Genetics, Mental Health, Nursing, General Nursing Social Sciences: Education, Political Science, History, Economics, Management, Dental Science, Dentistry, Ophthalmology, Geography, Arts and Humanities, Social Science, Plant Science, Anthropology, Dermatology, Biotechnology, Law, Agricultural Sciences, Meditation, Exercise, Yoga and Therapy.",
     sjrLink:
