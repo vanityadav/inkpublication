@@ -6,10 +6,13 @@ export default function Dialog({
   setOpenDialog,
   handleNext,
   handlePrevious,
+  prevbuttonStatus,
+  nextbuttonStatus,
 }) {
   const dialogRef = useRef();
 
   useEffect(() => {
+    console.log(prevbuttonStatus, nextbuttonStatus);
     if (showModal) dialogRef.current.showModal();
     console.log("Run Effect");
   }, []);
@@ -18,6 +21,7 @@ export default function Dialog({
     dialogRef.current.close();
     setOpenDialog(false);
   }
+
   return (
     <dialog ref={dialogRef} className="journal-popup">
       <div className="dialog-journal-info">
@@ -27,29 +31,23 @@ export default function Dialog({
       </div>
       <div className="journal-dialog-buttons-grp">
         <button
-          //   className={
-          //     prevbuttonStatus === "prev-disabled"
-          //       ? "button-disabled"
-          //       : "journal-dialog-buttons"
-          //   }
+          className={
+            !prevbuttonStatus ? "button-disabled" : "journal-dialog-buttons"
+          }
           onClick={handlePrevious}
         >
-          Previous
-          {/* {prevNavigateTo} */}
+          Previous {prevbuttonStatus ? "Journal" : "Page"}
         </button>
         <button className="journal-dialog-buttons" onClick={handleClose}>
           Close
         </button>
         <button
-          //   className={
-          //     nextbuttonStatus === "next-disabled"
-          //       ? "button-disabled"
-          //       : "journal-dialog-buttons"
-          //   }
+          className={
+            !nextbuttonStatus ? "button-disabled" : "journal-dialog-buttons"
+          }
           onClick={handleNext}
         >
-          Next
-          {/* {nextNavigateTo} */}
+          Next {nextbuttonStatus ? "Journal" : "Page"}
         </button>
       </div>
     </dialog>

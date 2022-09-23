@@ -1,6 +1,11 @@
 import React from "react";
 
-export default function ResultInfo() {
+export default function ResultInfo({
+  selectedJournal,
+  numberOfResults,
+  totalResults,
+  searchInfo,
+}) {
   return (
     <div className="result-info">
       {!searchInfo && (

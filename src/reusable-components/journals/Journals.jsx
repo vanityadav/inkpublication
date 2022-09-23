@@ -6,6 +6,7 @@ import CompHeader from "./CompHeader";
 import Pagination from "./Pagination";
 import { useEffect, useState } from "react";
 import { journals as dbJournals } from "../../services/data";
+import ResultInfo from "./ResultInfo";
 
 export default function Journals({ setSelectedJournal, selectedJournal }) {
   const itemsPerPage = 4;
@@ -18,9 +19,13 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
   const [dialogJournal, setDialogJournal] = useState();
   const [currentIndex, setCurrentIndex] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [emptyQuery, setEmptyQuery] = useState();
   const [pagesArray, setPagesArray] = useState([]);
-  // const [numberOfResults, setResults] = useState(0);
-  // const [totalResults, setTotalResults] = useState(0);
+  const [numberOfResults, setResults] = useState(0);
+  const [totalResults, setTotalResults] = useState(0);
+  const [searchInfo, setSearchInfo] = useState(false);
+  const [prevbuttonStatus, setPrevButtonStatus] = useState(false);
+  const [nextbuttonStatus, setNextButtonStatus] = useState(false);
 
   const searchPlaceholder = `Search Journals by ${selectedSearchFilter}`;
 
@@ -58,25 +63,30 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
   };
 
   useEffect(() => {
+    setSearchInfo(false);
     if (selectedJournal) {
       let category = filterArray.filter(
         (item) => item.value === selectedJournal
       )[0].key;
-      if (category === "all") setReceivedJournals(dbJournals);
-      else {
+      if (category === "all") {
+        setReceivedJournals(dbJournals);
+        setTotalResults(dbJournals.length);
+      } else {
         let categorizedJournals = dbJournals.filter((journal) =>
           journal.category.includes(category)
         );
         setReceivedJournals(categorizedJournals);
+        setTotalResults(categorizedJournals.length);
       }
     }
-  }, [selectedJournal]);
+    console.log("Use Effect Set New Categorized Journals");
+  }, [selectedJournal, emptyQuery]);
 
   useEffect(() => {
     let range = Math.ceil(receivedJournals.length / itemsPerPage);
     let pagearray = _.range(1, range + 1, 1);
     setPagesArray(pagearray);
-    console.log("Use Effect Calculated Range");
+
     const startIndex = (currentPage - 1) * itemsPerPage;
     const newReceivedJournals = _(receivedJournals)
       .slice(startIndex)
@@ -84,6 +94,8 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
       .value();
     setPagedJournals(newReceivedJournals);
     setCurrentPage(1);
+    setResults(newReceivedJournals.length);
+
     console.log("Use Effect Received Journals");
   }, [receivedJournals]);
 
@@ -94,7 +106,9 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
       .take(itemsPerPage)
       .value();
     setPagedJournals(newPagedJournals);
-    console.log("Use Effect Calculated New Paged Journals");
+    setResults(newPagedJournals.length);
+
+    console.log("Use Effect Calculated New Paged Journals On Page Change");
   }, [currentPage]);
 
   function handleSearch({ target }) {
@@ -102,15 +116,19 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
       (sfilter) => sfilter.value === selectedSearchFilter
     )[0].key;
     let query = target.value;
-    console.log(query);
+    console.log(query, selectedJournal);
     if (query !== "") {
       const filteredJournals = dbJournals.filter((journal) =>
         journal[`${userFilter}`]?.toLowerCase().includes(query)
       );
+      setSearchInfo(true);
       setReceivedJournals(filteredJournals);
+      setEmptyQuery(false);
       console.log("Sets New Received Journals");
+    } else {
+      setEmptyQuery(true);
+      setSearchInfo(false);
     }
-    if ((query = "")) setSelectedJournal(selectedJournal);
   }
   function handleViewDetails(jID) {
     let dJournal = pagedJournals.filter((journal) => {
@@ -120,23 +138,73 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
     setCurrentIndex(arrayIndex);
     setOpenDialog(true);
     setDialogJournal(dJournal);
+
+    if (
+      arrayIndex === pagedJournals.length - 1 &&
+      currentPage < pagesArray.length + 1
+    ) {
+      setNextButtonStatus(false);
+    } else setNextButtonStatus(true);
+
+    if (arrayIndex === 0 && currentPage > 0) {
+      setPrevButtonStatus(false);
+    } else setPrevButtonStatus(true);
   }
+
   function handleNext() {
-    let nextIndex = currentIndex + 1;
-    if (nextIndex < pagedJournals.length) {
-      setCurrentIndex(nextIndex);
-      setDialogJournal(pagedJournals[nextIndex]);
+    if (currentIndex < pagedJournals.length) {
+      let nextIndex = currentIndex + 1;
+      if (
+        nextIndex === pagedJournals.length - 1 &&
+        currentPage < pagesArray.length + 1
+      )
+        setNextButtonStatus(false);
+      if (
+        nextIndex === pagedJournals.length &&
+        currentPage < pagesArray.length
+      ) {
+        setCurrentPage((prev) => prev + 1);
+        setOpenDialog(false);
+        setNextButtonStatus(false);
+      }
+
+      if (nextIndex > 0) setPrevButtonStatus(true);
+      if (nextIndex < pagedJournals.length) {
+        setCurrentIndex(nextIndex);
+
+        setDialogJournal(pagedJournals[nextIndex]);
+      }
     }
   }
 
   function handlePrevious() {
-    let prevIndex = currentIndex - 1;
-    if (prevIndex >= 0) {
-      setCurrentIndex(prevIndex);
-      setDialogJournal(pagedJournals[prevIndex]);
+    if (currentIndex > -1) {
+      let prevIndex = currentIndex - 1;
+      if (prevIndex === 0 && currentPage > 0) setPrevButtonStatus(false);
+      if (prevIndex === -1 && currentPage > 1) {
+        setCurrentPage((prev) => prev - 1);
+        setOpenDialog(false);
+        setPrevButtonStatus(false);
+      }
+      if (prevIndex >= 0) setNextButtonStatus(true);
+      if (prevIndex >= 0) {
+        setCurrentIndex(prevIndex);
+
+        setDialogJournal(pagedJournals[prevIndex]);
+      }
     }
   }
-  const pagesProps = { setCurrentPage, currentPage, pagesArray };
+  const pagesProps = {
+    setCurrentPage,
+    currentPage,
+    pagesArray,
+  };
+  const resultProps = {
+    selectedJournal,
+    numberOfResults,
+    totalResults,
+    searchInfo,
+  };
   return (
     <div className="journals-page">
       {console.log("Component Rendered")}
@@ -152,9 +220,12 @@ export default function Journals({ setSelectedJournal, selectedJournal }) {
           setOpenDialog={setOpenDialog}
           handleNext={handleNext}
           handlePrevious={handlePrevious}
+          prevbuttonStatus={prevbuttonStatus}
+          nextbuttonStatus={nextbuttonStatus}
         />
       )}
-      <Pagination {...pagesProps} />
+      <ResultInfo {...resultProps} />
+      {pagesArray.length > 1 && <Pagination {...pagesProps} />}
     </div>
   );
 }
