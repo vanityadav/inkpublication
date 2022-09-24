@@ -18,7 +18,7 @@ export default function Dropdown({
     initial: { top: "10vw", opacity: 0 },
     animate: { top: "220%", opacity: 1 },
     exit: { top: "10vw", opacity: 0 },
-    transition: { type: "spring", stiffness: 50 },
+    transition: { type: "spring", duration: 1.5 },
   };
   useEffect(() => {
     if (showDropdown) {
